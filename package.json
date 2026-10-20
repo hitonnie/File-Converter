@@ -4,6 +4,6 @@
   "private": true,
   "description": "Free in-browser PDF and image converter",
   "scripts": {
-    "start": "node server.js"
+    "start": "node scripts/dev-server.js"
   }
 }

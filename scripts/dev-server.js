@@ -1,10 +1,12 @@
-// Tiny zero-dependency static server for local development: `node server.js`
+// Tiny zero-dependency static server for local development (`npm start`). Not used in production:
+// the site is plain static files. It lives outside the project root so hosts like Vercel do not
+// mistake it for a backend server and deploy it instead of the site.
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
 const PORT = Number(process.env.PORT) || 5173;
-const ROOT = __dirname;
+const ROOT = path.resolve(__dirname, '..');
 const TYPES = {
   '.html': 'text/html; charset=utf-8',
   '.css': 'text/css; charset=utf-8',
