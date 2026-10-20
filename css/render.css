@@ -1,0 +1,136 @@
+/*
+ * Styles for documents being converted to PDF (Word and OpenDocument). These pages are laid out
+ * off-screen and captured with html2canvas, so they must look like paper, not like the site.
+ */
+
+/* invisible render stage */
+.render-stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.render-page {
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+  letter-spacing: normal;
+}
+
+/* Word (.docx) content */
+.docx-render {
+  display: flow-root;
+  height: 100%;
+  overflow: hidden;
+  color: #000;
+  font-family: Calibri, Carlito, "Segoe UI", Arial, sans-serif;
+  font-size: 11pt;
+  line-height: 1.3;
+  overflow-wrap: break-word;
+}
+
+.docx-render p { margin: 0 0 8pt; }
+.docx-render h1 { margin: 12pt 0 6pt; font-size: 16pt; font-weight: 600; color: #1f3864; }
+.docx-render h2 { margin: 10pt 0 5pt; font-size: 13pt; font-weight: 600; color: #2f5496; }
+.docx-render h3 { margin: 8pt 0 4pt; font-size: 12pt; font-weight: 600; color: #1f3864; }
+.docx-render h4,
+.docx-render h5,
+.docx-render h6 { margin: 8pt 0 4pt; font-size: 11pt; font-weight: 700; }
+.docx-render ul,
+.docx-render ol { margin: 0 0 8pt; padding-left: 24pt; }
+.docx-render li > p { margin: 0; }
+.docx-render table { width: 100%; margin: 0 0 8pt; border-collapse: collapse; }
+.docx-render td,
+.docx-render th { padding: 3pt 5pt; border: 1px solid #8c8c8c; vertical-align: top; text-align: left; }
+.docx-render td p,
+.docx-render th p { margin: 0; }
+.docx-render img { max-width: 100%; max-height: var(--inner-h, 240mm); height: auto; }
+.docx-render a { color: #0563c1; }
+
+/* OpenDocument text & spreadsheets — the document's own styles are applied inline */
+.odf-render {
+  display: flow-root;
+  height: 100%;
+  overflow: hidden;
+  color: #000;
+  font-family: "Liberation Serif", "Times New Roman", serif;
+  font-size: 12pt;
+  line-height: normal;
+  overflow-wrap: break-word;
+}
+
+.odf-render p,
+.odf-render h1,
+.odf-render h2,
+.odf-render h3,
+.odf-render h4,
+.odf-render h5,
+.odf-render h6 { margin: 0; font-size: 1em; }
+.odf-render ul,
+.odf-render ol { margin: 0; padding-left: 0.64cm; }
+.odf-render table { border-collapse: collapse; }
+.odf-render td { padding: 0; vertical-align: top; }
+.odf-render img { max-width: 100%; max-height: var(--inner-h, 250mm); height: auto; }
+.odf-render a { color: #000080; text-decoration: underline; }
+.odf-render .odf-frame { display: inline-block; vertical-align: top; }
+.odf-tab { display: inline-block; width: 1.25cm; }
+.odf-notes-rule { width: 33%; margin: 12pt 0 6pt; border: 0; border-top: 1px solid #000; }
+.odf-note { font-size: 10pt; }
+
+/* Spreadsheets (OpenDocument and Excel) */
+.sheet-render {
+  display: flow-root;
+  height: 100%;
+  overflow: hidden;
+  color: #000;
+  font-family: Calibri, Carlito, Arial, sans-serif;
+  font-size: 11pt;
+  line-height: normal;
+}
+
+.render-page .sheet-name {
+  margin: 0 0 6pt;
+  color: #444;
+  font: 600 11pt "Liberation Sans", Arial, sans-serif;
+}
+
+.sheet-table { border-collapse: collapse; font-family: "Liberation Sans", Arial, sans-serif; }
+.render-page .sheet-table td { padding: 0.12em 0.3em; vertical-align: bottom; white-space: nowrap; }
+.sheet-grid td { border: 1px solid #d0d0d0; }
+
+/* Excel: fixed column widths; borders and gridlines are resolved per cell edge in JS */
+.xl-table { table-layout: fixed; border-collapse: collapse; font-family: Calibri, Carlito, Arial, sans-serif; }
+.render-page .xl-table td {
+  overflow: hidden;
+  padding: 0 0.25em;
+  line-height: 1.2;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+/* OpenDocument presentations & drawings */
+.odf-slide {
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+  color: #000;
+  font-family: "Liberation Sans", Arial, sans-serif;
+  font-size: 18pt;
+  line-height: normal;
+  letter-spacing: normal;
+}
+
+.odf-shape {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow-wrap: break-word;
+}
+
+.odf-shape p { margin: 0; }
+.odf-shape ul,
+.odf-shape ol { margin: 0; padding-left: 1.2em; }
+.odf-shape table { width: 100%; border-collapse: collapse; }

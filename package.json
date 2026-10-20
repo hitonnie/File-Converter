@@ -1,0 +1,9 @@
+{
+  "name": "file-converter",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Free in-browser PDF and image converter",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

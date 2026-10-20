@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free PDF & Image Converter</title>
+  <meta name="description" content="Convert, merge, split and compress PDFs, documents and images for free. Everything runs in your browser — your files are never uploaded.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Crect width='16' height='16' fill='%230a0a0a'/%3E%3Crect x='1' y='1' width='14' height='14' fill='%23ffca2d'/%3E%3Cpath d='M4 4h6v2H4zM4 7h8v2H4zM4 10h5v2H4z' fill='%230a0a0a'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/render.css">
+  <script>
+    // Apply the saved theme before first paint to avoid a flash.
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <nav class="topnav" aria-label="Tool categories">
+        <a href="#/" class="nav-btn" data-nav=""><span data-icon="grid"></span><span>Tools</span></a>
+        <a href="#/pdf" class="nav-btn" data-nav="pdf"><span data-icon="file"></span><span>PDF</span></a>
+        <a href="#/images" class="nav-btn" data-nav="images"><span data-icon="imageToPdf"></span><span>Images</span></a>
+        <a href="#/convert" class="nav-btn" data-nav="convert"><span data-icon="convert"></span><span>Convert</span></a>
+      </nav>
+      <button type="button" class="icon-btn theme-btn" id="theme-toggle" aria-label="Toggle dark mode"></button>
+    </div>
+  </header>
+
+  <main id="app" class="container"></main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>© <span id="year"></span> · <strong>Free file converter</strong></span>
+      <span>Your files never leave your device. Made with pixels.</span>
+    </div>
+  </footer>
+
+  <div class="scroll-meter" aria-hidden="true"><span id="scroll-meter"></span></div>
+  <div class="drop-overlay" id="drop-overlay" aria-hidden="true">
+    <div class="drop-overlay-card">Drop files to add them</div>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/icons.js"></script>
+  <script src="js/utils.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/odf.js"></script>
+  <script src="js/excel.js"></script>
+  <script src="js/tools.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
