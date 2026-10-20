@@ -20,51 +20,6 @@ A simple Smallpdf-style website for converting documents and images. Every conve
 | Convert Image | Convert to JPG / PNG / WEBP / BMP, with optional resizing (HEIC input supported) |
 | Compress Image | Lower the quality and/or limit the dimensions to shrink images |
 
-## Run it locally
-
-```bash
-npm start
-```
-
-Then open http://localhost:5173. You can also double-click `index.html`, though a few browsers
-limit some features on `file://` pages, so the local server is the more reliable option.
-
-## Deploy
-
-It's a static site, so upload the folder to any static host (GitHub Pages, Netlify, Vercel,
-Cloudflare Pages, S3). No build step. `server.js` is only for local development.
-
-## Project layout
-
-```
-index.html        page shell (header, footer, script tags)
-css/style.css     site styles: retro pixel-art theme (Press Start 2P + VT323), light and dark
-css/render.css    styles for documents while they're laid out as PDF pages (kept separate from the theme)
-js/icons.js       inline SVG icons
-js/utils.js       loads libraries on demand; image, PDF and page-range helpers
-js/render.js      lays HTML out on pages and captures them into a PDF (Word, Excel and ODF tools)
-js/odf.js         OpenDocument reader: resolves ODF styles and builds pages for ODT/ODS/ODP/ODG
-js/excel.js       Excel reader: XLSX styles, themes and number formats; XLS/XLSB/CSV via SheetJS
-js/tools.js       the tool definitions; add or change tools here
-js/app.js         routing, home page, upload → options → convert → download flow
-```
-
-### Adding a tool
-
-Add an object to `window.TOOLS` in `js/tools.js` with an `id`, `name`, `desc`, `icon`, `tags`,
-`exts` (accepted file extensions), `options`, and an `async run(files, options, ctx)` that returns
-`{ outputs: [{ name, blob }] }`. The UI (file picking, options panel, progress, and downloads,
-including ZIP) is generated automatically.
-
-## Libraries (loaded from CDN only when a tool needs them)
-
-pdf-lib · pdf.js · mammoth · html2canvas · JSZip · heic2any · SortableJS · SheetJS
-
-SheetJS is loaded from its official CDN (`cdn.sheetjs.com`, version 0.20.3): the older 0.18.x builds
-published to npm have known security issues.
-
-OpenDocument files are read directly (they're ZIP archives of XML), so no extra library is needed.
-
 ## Limitations
 
 - **Word to PDF** renders pages as high-resolution images, so text in the PDF can't be selected.
