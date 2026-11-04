@@ -1,0 +1,43 @@
+# Builds the Windows installer (desktop/dist/File-Converter-Setup-<version>.exe) on a clean
+# Windows machine. Run it from the Actions tab ("Run workflow"), or push a tag like v1.0.0 to
+# also attach the installer to a GitHub release.
+name: Windows installer
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write # only used to attach the installer to a release on tag pushes
+
+jobs:
+  build:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: desktop
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: desktop/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: File-Converter-Setup
+          path: desktop/dist/*.exe
+          if-no-files-found: error
+
+      - name: Attach to the GitHub release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: desktop/dist/*.exe

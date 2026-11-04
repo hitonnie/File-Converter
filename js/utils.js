@@ -4,23 +4,39 @@
 
   const PDFJS_VERSION = '3.11.174';
 
+  // Where libraries are loaded from. The website uses CDNs; the desktop app bundles everything
+  // and sets window.LOCAL_ASSETS (js/local-assets.js) to local copies so it works offline.
+  const ASSETS = Object.assign({
+    pdfLib: 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js',
+    pdfjs: `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`,
+    pdfjsWorker: `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`,
+    pdfjsCmaps: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
+    pdfjsFonts: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
+    jszip: 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
+    mammoth: 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js',
+    html2canvas: 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js',
+    heic2any: 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js',
+    sortable: 'https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js',
+    // Official SheetJS build (the npm 0.18.x releases have known security issues).
+    sheetjs: 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js',
+  }, window.LOCAL_ASSETS);
+
   // Libraries are loaded on demand, so the home page stays fast.
   const LIBS = {
-    pdfLib: { src: 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js', global: 'PDFLib' },
+    pdfLib: { src: ASSETS.pdfLib, global: 'PDFLib' },
     pdfjs: {
-      src: `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.min.js`,
+      src: ASSETS.pdfjs,
       global: 'pdfjsLib',
       init(lib) {
-        lib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${PDFJS_VERSION}/pdf.worker.min.js`;
+        lib.GlobalWorkerOptions.workerSrc = new URL(ASSETS.pdfjsWorker, document.baseURI).href;
       },
     },
-    jszip: { src: 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js', global: 'JSZip' },
-    mammoth: { src: 'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js', global: 'mammoth' },
-    html2canvas: { src: 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js', global: 'html2canvas' },
-    heic2any: { src: 'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js', global: 'heic2any' },
-    sortable: { src: 'https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js', global: 'Sortable' },
-    // Official SheetJS build (the npm 0.18.x releases have known security issues).
-    sheetjs: { src: 'https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js', global: 'XLSX' },
+    jszip: { src: ASSETS.jszip, global: 'JSZip' },
+    mammoth: { src: ASSETS.mammoth, global: 'mammoth' },
+    html2canvas: { src: ASSETS.html2canvas, global: 'html2canvas' },
+    heic2any: { src: ASSETS.heic2any, global: 'heic2any' },
+    sortable: { src: ASSETS.sortable, global: 'Sortable' },
+    sheetjs: { src: ASSETS.sheetjs, global: 'XLSX' },
   };
 
   const pending = {};
@@ -236,9 +252,9 @@
       return await pdfjs.getDocument({
         data: new Uint8Array(await file.arrayBuffer()),
         isEvalSupported: false,
-        cMapUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/cmaps/`,
+        cMapUrl: new URL(ASSETS.pdfjsCmaps, document.baseURI).href,
         cMapPacked: true,
-        standardFontDataUrl: `https://cdn.jsdelivr.net/npm/pdfjs-dist@${PDFJS_VERSION}/standard_fonts/`,
+        standardFontDataUrl: new URL(ASSETS.pdfjsFonts, document.baseURI).href,
       }).promise;
     } catch (e) {
       if (e && e.name === 'PasswordException') throw new Error(`"${file.name}" is password-protected. Remove the password and try again.`);

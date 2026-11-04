@@ -1,0 +1,2 @@
+# The website is plain static files; the desktop app's sources don't need to be deployed.
+desktop/
